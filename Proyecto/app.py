@@ -1,4 +1,4 @@
-from models import Producto, Inventario
+from Proyecto.models import Producto, Inventario
 from flask import Flask, render_template, request, redirect, g
 import sqlite3
 import os
