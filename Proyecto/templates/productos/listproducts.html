@@ -1,11 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Lista de Productos</h2>
 
-<ul>
-    <li>Producto 1</li>
-    <li>Producto 2</li>
-</ul>
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">📚 Lista de Libros</h2>
+
+    {% if productos %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped shadow">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Año</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.id }}</td>
+                    <td>{{ producto.titulo }}</td>
+                    <td>{{ producto.autor }}</td>
+                    <td>{{ producto.anio }}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No hay libros registrados aún.
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-3">
+        <a href="{{ url_for('nuevo_producto') }}" class="btn btn-success">
+            ➕ Agregar Nuevo Libro
+        </a>
+    </div>
+</div>
 
 {% endblock %}

@@ -1,40 +1,83 @@
 {% extends "base.html" %}
 
+{% block title %}Inicio | Biblioteca Virtual{% endblock %}
+
 {% block content %}
 
 <div class="text-center mb-5">
-    <h1 class="display-4 fw-bold">Bienvenido a Biblioteca Virtual</h1>
+
+    <h1 class="display-4 fw-bold">
+        📚 Biblioteca Virtual Express
+    </h1>
+
     <p class="lead text-muted">
-        Gestiona tus libros de manera rápida, sencilla y organizada.
+        Sistema Avanzado de Gestión de Inventario desarrollado con Flask, POO y SQLite.
     </p>
+
+    <hr class="w-50 mx-auto">
+
 </div>
 
 <div class="row g-4">
 
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-            <h4>📚 Ver Libros</h4>
-            <p>Consulta el listado completo de libros disponibles.</p>
+    <!-- VER INVENTARIO -->
+    <div class="col-md-3">
+        <div class="card shadow h-100 text-center p-4 border-0">
+            <div class="mb-3">
+                <span style="font-size: 40px;">📖</span>
+            </div>
+            <h5 class="fw-bold">Ver Inventario</h5>
+            <p class="text-muted">
+                Consulta todos los libros registrados.
+            </p>
             <a href="{{ url_for('lista_productos') }}" class="btn btn-primary">
-                Ir a Libros
+                Ver Inventario
             </a>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-            <h4>➕ Agregar Libro</h4>
-            <p>Registra un nuevo libro en la biblioteca.</p>
+    <!-- AGREGAR -->
+    <div class="col-md-3">
+        <div class="card shadow h-100 text-center p-4 border-0">
+            <div class="mb-3">
+                <span style="font-size: 40px;">➕</span>
+            </div>
+            <h5 class="fw-bold">Registrar Libro</h5>
+            <p class="text-muted">
+                Añade un nuevo libro al sistema.
+            </p>
             <a href="{{ url_for('nuevo_producto') }}" class="btn btn-success">
-                Agregar Libro
+                Agregar
             </a>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-            <h4>📞 Contacto</h4>
-            <p>Envíanos tus consultas o sugerencias.</p>
+    <!-- BUSCAR -->
+    <div class="col-md-3">
+        <div class="card shadow h-100 text-center p-4 border-0">
+            <div class="mb-3">
+                <span style="font-size: 40px;">🔍</span>
+            </div>
+            <h5 class="fw-bold">Buscar Libro</h5>
+            <p class="text-muted">
+                Busca libros por nombre rápidamente.
+            </p>
+            <a href="{{ url_for('buscar_producto') }}" class="btn btn-info">
+                Buscar
+            </a>
+        </div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="col-md-3">
+        <div class="card shadow h-100 text-center p-4 border-0">
+            <div class="mb-3">
+                <span style="font-size: 40px;">📩</span>
+            </div>
+            <h5 class="fw-bold">Contacto</h5>
+            <p class="text-muted">
+                Envíanos tus sugerencias o comentarios.
+            </p>
             <a href="{{ url_for('contactos') }}" class="btn btn-secondary">
                 Contactar
             </a>

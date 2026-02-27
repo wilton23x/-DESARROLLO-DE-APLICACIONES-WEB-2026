@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\MOCHI\Documents\proyecto_biblioteca_virtual\venv"
+set "VIRTUAL_ENV=C:\Users\MOCHI\Documents\-DESARROLLO-DE-APLICACIONES-WEB-2026\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 

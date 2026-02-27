@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV 'C:\Users\MOCHI\Documents\proyecto_biblioteca_virtual\venv'
+set -gx VIRTUAL_ENV 'C:\Users\MOCHI\Documents\-DESARROLLO-DE-APLICACIONES-WEB-2026\venv'
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"Scripts $PATH

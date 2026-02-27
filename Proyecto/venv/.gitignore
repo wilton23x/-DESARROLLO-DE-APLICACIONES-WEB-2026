@@ -1,7 +1,4 @@
-# Entorno virtual
 venv/
-Proyecto/venv/
-
-# Archivos temporales
+instance/
 __pycache__/
 *.pyc
