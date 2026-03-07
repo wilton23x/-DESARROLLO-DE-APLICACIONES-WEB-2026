@@ -2,60 +2,94 @@
 
 {% block content %}
 
-<div class="container mt-4">
-    <h2 class="mb-4 text-center">🔍 Buscar Producto</h2>
+<div class="container mt-5">
 
-    <div class="card shadow p-4 mb-4">
+    <!-- TITULO -->
+    <div class="text-center mb-4">
+        <h2>🔎 Búsqueda de Productos</h2>
+        <p class="text-muted">Ingrese el nombre del producto que desea buscar</p>
+    </div>
+
+    <!-- FORMULARIO DE BUSQUEDA -->
+    <div class="card shadow-lg p-4 mb-4">
         <form method="post">
+
             <div class="mb-3">
-                <label class="form-label">Nombre del producto</label>
-                <input type="text" name="nombre" class="form-control"
-                       placeholder="Ingrese el nombre del producto" required>
+                <label class="form-label fw-bold">Nombre del producto</label>
+
+                <div class="input-group">
+                    <span class="input-group-text">🔍</span>
+
+                    <input type="text"
+                           name="nombre"
+                           class="form-control"
+                           placeholder="Ejemplo: Libro, Cuaderno, Lapicero"
+                           required>
+                </div>
             </div>
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-success px-4">
                     Buscar
                 </button>
-                <a href="/productos" class="btn btn-secondary">
+
+                <a href="/productos" class="btn btn-outline-secondary px-4">
                     Volver
                 </a>
             </div>
+
         </form>
     </div>
 
-    {% if productos %}
-        <h4 class="mb-3">Resultados encontrados:</h4>
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped shadow">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Autor</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in productos %}
-                    <tr>
-                        <td>{{ producto.id }}</td>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.autor }}</td>
-                        <td>{{ producto.cantidad }}</td>
-                        <td>${{ producto.precio }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- RESULTADOS -->
+    {% if productos %}
+
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                📚 Resultados encontrados
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Autor</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-center">
+
+                        {% for producto in productos %}
+
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.autor }}</td>
+                            <td>{{ producto.cantidad }}</td>
+                            <td>$ {{ producto.precio }}</td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
         </div>
+
 
     {% elif request.method == "POST" %}
-        <div class="alert alert-warning text-center">
-            No se encontraron productos con ese nombre.
+
+        <div class="alert alert-warning text-center shadow">
+            ⚠ No se encontraron productos con ese nombre.
         </div>
+
     {% endif %}
 
 </div>

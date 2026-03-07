@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Datos TXT</h2>
+<ul>
+    {% for d in txt %}
+        <li>{{ d }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Datos JSON</h2>
+<ul>
+    {% for d in json_datos %}
+        <li>{{ d.nombre }} - {{ d.autor }} - ${{ d.precio }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Datos CSV</h2>
+<ul>
+    {% for d in csv_datos %}
+        <li>{{ d }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

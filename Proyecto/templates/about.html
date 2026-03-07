@@ -4,47 +4,104 @@
 
 {% block content %}
 
-<div class="card shadow p-4">
+<div class="container mt-5">
 
-    <h2 class="mb-4">📘 Acerca del Sistema</h2>
+    <div class="card shadow-lg p-4">
 
-    <p>
-        <strong>Biblioteca Virtual Express</strong> es un Sistema Avanzado de Gestión de Inventario
-        desarrollado con el framework Flask en Python.
-        Su propósito es administrar libros de manera organizada, permitiendo registrar,
-        editar, eliminar y visualizar información almacenada en una base de datos.
-    </p>
+        <div class="text-center mb-4">
+            <h2>📘 Acerca del Sistema</h2>
+            <p class="text-muted">Información general del proyecto Biblioteca Virtual Express</p>
+        </div>
 
-    <p>
-        La aplicación implementa el modelo CRUD (Crear, Leer, Actualizar y Eliminar),
-        conectado a una base de datos SQLite para garantizar el almacenamiento
-        persistente de los datos.
-    </p>
+        <p>
+            <strong>Biblioteca Virtual Express</strong> es un sistema web de gestión de inventario
+            desarrollado con <strong>Flask (Python)</strong>, diseñado para administrar de forma
+            eficiente el registro de libros dentro de una biblioteca digital.
+        </p>
 
-    <p>
-        Además, el sistema fue desarrollado aplicando Programación Orientada a Objetos (POO),
-        utilizando clases como <strong>Producto</strong> e <strong>Inventario</strong>,
-        junto con colecciones de Python como diccionarios y listas para gestionar
-        eficientemente la información.
-    </p>
+        <p>
+            El sistema permite realizar operaciones fundamentales sobre los registros de libros
+            mediante el modelo <strong>CRUD</strong> (Crear, Leer, Actualizar y Eliminar),
+            permitiendo gestionar información como:
+        </p>
 
-    <h5 class="mt-4">🔧 Tecnologías utilizadas:</h5>
+        <ul>
+            <li>Registro de nuevos libros</li>
+            <li>Visualización del inventario</li>
+            <li>Edición de información</li>
+            <li>Eliminación de registros</li>
+            <li>Búsqueda de libros dentro del sistema</li>
+        </ul>
 
-    <ul>
-        <li>HTML5 para la estructura del contenido</li>
-        <li>CSS3 para estilos personalizados</li>
-        <li>Bootstrap 5 para diseño responsivo</li>
-        <li>Flask como framework backend en Python</li>
-        <li>SQLite como base de datos</li>
-        <li>Jinja2 para la herencia de plantillas dinámicas</li>
-    </ul>
+        <p>
+            La aplicación se conecta a una base de datos <strong>SQLite</strong>, lo que permite
+            almacenar los datos de forma persistente y segura.
+        </p>
 
-    <p class="mt-4">
-        Este proyecto fue desarrollado como parte de la asignatura
-        <strong>Desarrollo de Aplicaciones Web</strong>
-        en la Universidad Estatal Amazónica,
-        con el objetivo de integrar frontend y backend en una aplicación web funcional.
-    </p>
+        <hr>
+
+        <h4 class="mt-3">🧠 Arquitectura del sistema</h4>
+
+        <p>
+            El proyecto fue desarrollado aplicando principios de
+            <strong>Programación Orientada a Objetos (POO)</strong>,
+            utilizando clases como:
+        </p>
+
+        <ul>
+            <li><strong>Producto:</strong> Representa cada libro almacenado en el sistema.</li>
+            <li><strong>Inventario:</strong> Gestiona la colección de productos utilizando listas y diccionarios.</li>
+        </ul>
+
+        <p>
+            También se implementa persistencia de datos utilizando distintos formatos de archivo como:
+        </p>
+
+        <ul>
+            <li>📄 Archivos TXT</li>
+            <li>📊 Archivos CSV</li>
+            <li>🗂 Archivos JSON</li>
+        </ul>
+
+        <hr>
+
+        <h4 class="mt-3">⚙ Tecnologías utilizadas</h4>
+
+        <div class="row mt-3">
+
+            <div class="col-md-6">
+                <ul>
+                    <li>🐍 Python</li>
+                    <li>🌐 Flask Framework</li>
+                    <li>🗄 SQLite Database</li>
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <ul>
+                    <li>🧩 Jinja2 (Plantillas)</li>
+                    <li>🧱 HTML5</li>
+                    <li>🎨 CSS3 y Bootstrap 5</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="text-center mt-4">
+            <p class="text-muted">
+                Proyecto desarrollado como práctica académica en la asignatura
+                <strong>Desarrollo de Aplicaciones Web</strong> de la
+                <strong>Universidad Estatal Amazónica</strong>.
+            </p>
+
+            <p class="text-muted">
+                👨‍🎓 Estudiante: <strong>Wilton Salazar</strong>
+            </p>
+        </div>
+
+    </div>
 
 </div>
 

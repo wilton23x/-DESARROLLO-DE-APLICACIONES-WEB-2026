@@ -2,48 +2,85 @@
 
 {% block content %}
 
-<div class="container mt-4">
-    <h2 class="mb-4 text-center">📚 Lista de Libros</h2>
+<div class="container mt-5">
+
+    <!-- TITULO -->
+    <div class="text-center mb-4">
+        <h2>📚 Lista de Libros</h2>
+        <p class="text-muted">Inventario de libros registrados en el sistema</p>
+    </div>
 
     {% if productos %}
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped shadow">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Título</th>
-                    <th>Autor</th>
-                    <th>Año</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for producto in productos %}
-                <tr>
-                    <td>{{ producto.id }}</td>
-                    <td>{{ producto.titulo }}</td>
-                    <td>{{ producto.autor }}</td>
-                    <td>{{ producto.anio }}</td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% else %}
-        <div class="alert alert-info text-center">
-            No hay libros registrados aún.
+    <div class="card shadow-lg p-3">
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Año</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for producto in productos %}
+                    <tr>
+
+                        <td class="text-center">{{ producto.id }}</td>
+
+                        <td>{{ producto.titulo }}</td>
+
+                        <td>{{ producto.autor }}</td>
+
+                        <td class="text-center">{{ producto.anio }}</td>
+
+                        <td class="text-center">
+
+                            <a href="{{ url_for('editar_producto', id=producto.id) }}"
+                               class="btn btn-sm btn-warning">
+                               ✏ Editar
+                            </a>
+
+                            <a href="{{ url_for('eliminar_producto', id=producto.id) }}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Seguro que deseas eliminar este libro?')">
+                               🗑 Eliminar
+                            </a>
+
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
         </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info text-center shadow">
+        📭 No hay libros registrados aún.
+    </div>
+
     {% endif %}
 
-    <div class="text-center mt-3">
-        <a href="{{ url_for('nuevo_producto') }}" class="btn btn-success">
+    <!-- BOTON AGREGAR -->
+    <div class="text-center mt-4">
+
+        <a href="{{ url_for('nuevo_producto') }}" class="btn btn-success btn-lg">
             ➕ Agregar Nuevo Libro
         </a>
+
     </div>
+
 </div>
 
 {% endblock %}
