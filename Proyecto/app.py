@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models import Producto, Inventario
+from Proyecto.models import Producto, Inventario
 from conexion.conexion import obtener_conexion
 
 import json
