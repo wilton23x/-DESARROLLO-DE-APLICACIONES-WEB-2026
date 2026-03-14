@@ -21,7 +21,8 @@
                         <th>ID</th>
                         <th>Título</th>
                         <th>Autor</th>
-                        <th>Año</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -33,11 +34,13 @@
 
                         <td class="text-center">{{ producto.id }}</td>
 
-                        <td>{{ producto.titulo }}</td>
+                        <td>{{ producto.nombre }}</td>
 
                         <td>{{ producto.autor }}</td>
 
-                        <td class="text-center">{{ producto.anio }}</td>
+                        <td class="text-center">{{ producto.cantidad }}</td>
+
+                        <td class="text-center">${{ producto.precio }}</td>
 
                         <td class="text-center">
 

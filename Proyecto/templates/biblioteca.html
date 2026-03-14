@@ -6,67 +6,87 @@
 
 <div class="container mt-4">
 
-<h2 class="mb-4">📚 Biblioteca Virtual</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<a href="{{ url_for('inicio') }}" class="btn btn-secondary mb-3">
-    Volver al inicio
+<h2>📚 Inventario de Libros</h2>
+
+<div>
+
+<a href="{{ url_for('inicio') }}" class="btn btn-secondary">
+🏠 Inicio
 </a>
 
-<a href="{{ url_for('nuevo_producto') }}" class="btn btn-success mb-3">
-    ➕ Agregar libro
+<a href="{{ url_for('nuevo_producto') }}" class="btn btn-success">
+➕ Nuevo libro
 </a>
 
-<table class="table table-bordered table-striped shadow">
+</div>
 
-```
+</div>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-hover table-striped">
+
 <thead class="table-dark">
-    <tr>
-        <th>ID</th>
-        <th>Título</th>
-        <th>Autor</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Acciones</th>
-    </tr>
+
+<tr>
+
+<th>ID</th>
+<th>Título</th>
+<th>Autor</th>
+<th>Cantidad</th>
+<th>Precio</th>
+<th class="text-center">Acciones</th>
+
+</tr>
+
 </thead>
 
 <tbody>
 
-    {% for producto in productos %}
-    <tr>
+{% for producto in productos %}
 
-        <td>{{ producto.id }}</td>
+<tr>
 
-        <td>{{ producto.nombre }}</td>
+<td>{{ producto.id }}</td>
 
-        <td>{{ producto.autor }}</td>
+<td>{{ producto.nombre }}</td>
 
-        <td>{{ producto.cantidad }}</td>
+<td>{{ producto.autor }}</td>
 
-        <td>${{ producto.precio }}</td>
+<td>{{ producto.cantidad }}</td>
 
-        <td>
+<td>${{ producto.precio }}</td>
 
-            <a href="{{ url_for('editar_producto', id=producto.id) }}"
-               class="btn btn-warning btn-sm">
-               Editar
-            </a>
+<td class="text-center">
 
-            <a href="{{ url_for('eliminar_producto', id=producto.id) }}"
-               class="btn btn-danger btn-sm"
-               onclick="return confirm('¿Seguro que deseas eliminar este libro?')">
-               Eliminar
-            </a>
+<a href="{{ url_for('editar_producto', id=producto.id) }}"
+class="btn btn-warning btn-sm">
+✏ Editar
+</a>
 
-        </td>
+<a href="{{ url_for('eliminar_producto', id=producto.id) }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('¿Seguro que deseas eliminar este libro?')">
+🗑 Eliminar
+</a>
 
-    </tr>
-    {% endfor %}
+</td>
+
+</tr>
+
+{% endfor %}
 
 </tbody>
-```
 
 </table>
+
+</div>
+
+</div>
 
 </div>
 

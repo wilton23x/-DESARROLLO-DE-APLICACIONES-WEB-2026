@@ -34,8 +34,11 @@
         </ul>
 
         <p>
-            La aplicación se conecta a una base de datos <strong>SQLite</strong>, lo que permite
-            almacenar los datos de forma persistente y segura.
+            La aplicación utiliza diferentes mecanismos de persistencia de datos. Inicialmente
+            se implementó una base de datos <strong>SQLite</strong> para almacenar la información
+            del inventario de libros. Posteriormente se integró una base de datos relacional
+            <strong>MySQL</strong> para gestionar la información de usuarios del sistema,
+            permitiendo una arquitectura más escalable.
         </p>
 
         <hr>
@@ -50,11 +53,11 @@
 
         <ul>
             <li><strong>Producto:</strong> Representa cada libro almacenado en el sistema.</li>
-            <li><strong>Inventario:</strong> Gestiona la colección de productos utilizando listas y diccionarios.</li>
+            <li><strong>Inventario:</strong> Gestiona la colección de productos.</li>
         </ul>
 
         <p>
-            También se implementa persistencia de datos utilizando distintos formatos de archivo como:
+            También se implementa persistencia de datos utilizando distintos formatos de archivo:
         </p>
 
         <ul>
@@ -73,7 +76,8 @@
                 <ul>
                     <li>🐍 Python</li>
                     <li>🌐 Flask Framework</li>
-                    <li>🗄 SQLite Database</li>
+                    <li>🗄 SQLite</li>
+                    <li>🗄 MySQL</li>
                 </ul>
             </div>
 
@@ -81,7 +85,8 @@
                 <ul>
                     <li>🧩 Jinja2 (Plantillas)</li>
                     <li>🧱 HTML5</li>
-                    <li>🎨 CSS3 y Bootstrap 5</li>
+                    <li>🎨 CSS3</li>
+                    <li>🎨 Bootstrap 5</li>
                 </ul>
             </div>
 

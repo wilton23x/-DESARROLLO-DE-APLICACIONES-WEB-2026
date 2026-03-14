@@ -1,26 +1,107 @@
 {% extends "base.html" %}
 
+{% block title %}Datos de Archivos{% endblock %}
+
 {% block content %}
 
-<h2>Datos TXT</h2>
-<ul>
-    {% for d in txt %}
-        <li>{{ d }}</li>
-    {% endfor %}
+<div class="container mt-4">
+
+<h2 class="mb-4">📂 Información almacenada en archivos</h2>
+
+<div class="row">
+
+<!-- TXT -->
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+📄 Datos TXT
+</div>
+
+<div class="card-body">
+
+<ul class="list-group">
+
+{% for d in txt %}
+
+<li class="list-group-item">
+{{ d[0] }} - {{ d[1] }} - {{ d[2] }} - ${{ d[3] }}
+</li>
+
+{% endfor %}
+
 </ul>
 
-<h2>Datos JSON</h2>
-<ul>
-    {% for d in json_datos %}
-        <li>{{ d.nombre }} - {{ d.autor }} - ${{ d.precio }}</li>
-    {% endfor %}
+</div>
+
+</div>
+
+</div>
+
+<!-- JSON -->
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+🗂 Datos JSON
+</div>
+
+<div class="card-body">
+
+<ul class="list-group">
+
+{% for d in json_datos %}
+
+<li class="list-group-item">
+<strong>{{ d.nombre }}</strong><br>
+Autor: {{ d.autor }}<br>
+Cantidad: {{ d.cantidad }}<br>
+Precio: ${{ d.precio }}
+</li>
+
+{% endfor %}
+
 </ul>
 
-<h2>Datos CSV</h2>
-<ul>
-    {% for d in csv_datos %}
-        <li>{{ d }}</li>
-    {% endfor %}
+</div>
+
+</div>
+
+</div>
+
+<!-- CSV -->
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-warning text-dark">
+📊 Datos CSV
+</div>
+
+<div class="card-body">
+
+<ul class="list-group">
+
+{% for d in csv_datos %}
+
+<li class="list-group-item">
+{{ d[0] }} - {{ d[1] }} - {{ d[2] }} - ${{ d[3] }}
+</li>
+
+{% endfor %}
+
 </ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 {% endblock %}

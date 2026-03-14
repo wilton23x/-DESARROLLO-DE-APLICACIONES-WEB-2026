@@ -1,211 +1,84 @@
-from Proyecto.models import Producto, Inventario
-from flask import Flask, render_template, request, redirect, g
-import sqlite3
-import os
+from flask import Flask, render_template, request, redirect, url_for
+from models import Producto, Inventario
+from conexion.conexion import obtener_conexion
+
 import json
 import csv
 
 app = Flask(__name__)
 
-# ==========================
-# PERSISTENCIA EN ARCHIVOS
-# ==========================
-
-def guardar_txt(nombre, autor, cantidad, precio):
-    with open("data/datos.txt", "a", encoding="utf-8") as archivo:
-        archivo.write(f"{nombre},{autor},{cantidad},{precio}\n")
+# =========================
+# INVENTARIO EN MEMORIA
+# =========================
+inventario = Inventario()
 
 
-def guardar_json(nombre, autor, cantidad, precio):
-
-    producto = {
-        "nombre": nombre,
-        "autor": autor,
-        "cantidad": cantidad,
-        "precio": precio
-    }
+# =========================
+# CARGAR CSV Y GUARDAR EN BD
+# =========================
+def cargar_csv():
 
     try:
-        with open("data/datos.json", "r", encoding="utf-8") as archivo:
-            datos = json.load(archivo)
-    except:
-        datos = []
 
-    datos.append(producto)
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
 
-    with open("data/datos.json", "w", encoding="utf-8") as archivo:
-        json.dump(datos, archivo, indent=4)
+        with open("datos.csv", newline="", encoding="utf-8") as archivo:
 
+            lector = csv.DictReader(archivo)
 
-def guardar_csv(nombre, autor, cantidad, precio):
-    with open("data/datos.csv", "a", newline="", encoding="utf-8") as archivo:
-        writer = csv.writer(archivo)
-        writer.writerow([nombre, autor, cantidad, precio])
+            for fila in lector:
 
+                id = int(fila["id"])
+                nombre = fila["nombre"]
+                autor = fila["autor"]
+                categoria = fila["categoria"]
+                precio = float(fila["precio"])
 
-# ==========================
-# LECTURA DE ARCHIVOS
-# ==========================
+                # Guardar en inventario
+                producto = Producto(id, nombre, autor, 1, precio)
+                inventario.agregar_producto(producto)
 
-def leer_txt():
+                # Guardar en base de datos
+                sql = """
+                INSERT INTO libros (id, nombre, autor, categoria, precio)
+                VALUES (%s,%s,%s,%s,%s)
+                """
 
-    datos = []
+                valores = (id, nombre, autor, categoria, precio)
 
-    try:
-        with open("data/datos.txt", "r", encoding="utf-8") as archivo:
-            for linea in archivo:
-                datos.append(linea.strip().split(","))
-    except:
-        pass
+                try:
+                    cursor.execute(sql, valores)
+                except:
+                    pass
 
-    return datos
+        conexion.commit()
+        cursor.close()
+        conexion.close()
 
+        print("CSV cargado correctamente")
 
-def leer_json():
-
-    try:
-        with open("data/datos.json", "r", encoding="utf-8") as archivo:
-            datos = json.load(archivo)
-    except:
-        datos = []
-
-    return datos
+    except Exception as e:
+        print("Error cargando CSV:", e)
 
 
-def leer_csv():
-
-    datos = []
-
-    try:
-        with open("data/datos.csv", "r", encoding="utf-8") as archivo:
-            reader = csv.reader(archivo)
-
-            for fila in reader:
-                datos.append(fila)
-    except:
-        pass
-
-    return datos
+# Ejecutar al iniciar
+cargar_csv()
 
 
-# ==========================
-# BASE DE DATOS SQLITE
-# ==========================
-
-DATABASE = os.path.join("instance", "biblioteca.db")
-
-
-def get_db():
-
-    if "db" not in g:
-        g.db = sqlite3.connect(DATABASE)
-        g.db.row_factory = sqlite3.Row
-
-    return g.db
-
-
-@app.teardown_appcontext
-def close_db(error):
-
-    db = g.pop("db", None)
-
-    if db is not None:
-        db.close()
-
-
-def crear_tabla():
-
-    db = get_db()
-
-    db.execute("""
-        CREATE TABLE IF NOT EXISTS productos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT NOT NULL,
-            autor TEXT,
-            cantidad INTEGER NOT NULL,
-            precio REAL NOT NULL
-        )
-    """)
-
-    db.commit()
-
-
-# ==========================
-# CREAR CARPETAS NECESARIAS
-# ==========================
-
-if not os.path.exists("instance"):
-    os.makedirs("instance")
-
-if not os.path.exists("data"):
-    os.makedirs("data")
-
-with app.app_context():
-    crear_tabla()
-
-
-# ==========================
-# RUTAS PRINCIPALES
-# ==========================
-
-# ==========================
-# RUTAS PRINCIPALES
-# ==========================
-
+# =========================
+# PAGINA INICIO
+# =========================
 @app.route("/")
 def inicio():
     return render_template("index.html")
 
 
-@app.route("/buscar")
-def buscar_producto():
-    return render_template("buscar.html")
-
-
-@app.route("/contactos", methods=["GET","POST"])
-def contactos():
-
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        correo = request.form["correo"]
-        mensaje = request.form["mensaje"]
-
-        print(nombre, correo, mensaje)
-
-        return redirect("/")
-
-    return render_template("contactos.html")
-
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-# ==========================
-# CRUD PRODUCTOS
-# ==========================
-
+# =========================
 # LISTAR PRODUCTOS
+# =========================
 @app.route("/productos")
 def lista_productos():
-
-    db = get_db()
-
-    rows = db.execute("SELECT * FROM productos").fetchall()
-
-    inventario = Inventario()
-
-    for row in rows:
-
-        producto = Producto(
-            row["id"],
-            row["nombre"],
-            row["autor"],
-            row["cantidad"],
-            row["precio"]
-        )
-
-        inventario.agregar_producto(producto)
 
     productos = inventario.mostrar_todos()
 
@@ -215,66 +88,45 @@ def lista_productos():
     )
 
 
-# CREAR PRODUCTO
-@app.route("/productos/nuevo", methods=["GET","POST"])
+# =========================
+# NUEVO PRODUCTO
+# =========================
+@app.route("/nuevo", methods=["GET", "POST"])
 def nuevo_producto():
 
     if request.method == "POST":
 
+        id = len(inventario.productos) + 1
         nombre = request.form["nombre"]
         autor = request.form["autor"]
-        cantidad = request.form["cantidad"]
-        precio = request.form["precio"]
+        cantidad = int(request.form["cantidad"])
+        precio = float(request.form["precio"])
 
-        db = get_db()
+        producto = Producto(id, nombre, autor, cantidad, precio)
 
-        db.execute(
-            """
-            INSERT INTO productos
-            (nombre, autor, cantidad, precio)
-            VALUES (?, ?, ?, ?)
-            """,
-            (nombre, autor, cantidad, precio)
-        )
+        inventario.agregar_producto(producto)
 
-        db.commit()
+        return redirect(url_for("lista_productos"))
 
-        guardar_txt(nombre, autor, cantidad, precio)
-        guardar_json(nombre, autor, cantidad, precio)
-        guardar_csv(nombre, autor, cantidad, precio)
-
-        return redirect("/productos")
-
-    return render_template("productos/form.html")
+    return render_template("productos/form.html", producto=None)
 
 
+# =========================
 # EDITAR PRODUCTO
-@app.route("/productos/editar/<int:id>", methods=["GET","POST"])
+# =========================
+@app.route("/editar/<int:id>", methods=["GET", "POST"])
 def editar_producto(id):
 
-    db = get_db()
+    producto = inventario.productos.get(id)
 
     if request.method == "POST":
 
-        nombre = request.form["nombre"]
-        autor = request.form["autor"]
-        cantidad = request.form["cantidad"]
-        precio = request.form["precio"]
+        producto.nombre = request.form["nombre"]
+        producto.autor = request.form["autor"]
+        producto.cantidad = int(request.form["cantidad"])
+        producto.precio = float(request.form["precio"])
 
-        db.execute("""
-            UPDATE productos
-            SET nombre=?, autor=?, cantidad=?, precio=?
-            WHERE id=?
-        """, (nombre, autor, cantidad, precio, id))
-
-        db.commit()
-
-        return redirect("/productos")
-
-    producto = db.execute(
-        "SELECT * FROM productos WHERE id=?",
-        (id,)
-    ).fetchone()
+        return redirect(url_for("lista_productos"))
 
     return render_template(
         "productos/form.html",
@@ -282,32 +134,121 @@ def editar_producto(id):
     )
 
 
+# =========================
 # ELIMINAR PRODUCTO
-@app.route("/productos/eliminar/<int:id>")
+# =========================
+@app.route("/eliminar/<int:id>")
 def eliminar_producto(id):
 
-    db = get_db()
+    inventario.productos.pop(id, None)
 
-    db.execute(
-        "DELETE FROM productos WHERE id=?",
-        (id,)
+    return redirect(url_for("lista_productos"))
+
+
+# =========================
+# BUSCAR PRODUCTO
+# =========================
+@app.route("/buscar", methods=["GET"])
+def buscar_producto():
+
+    nombre = request.args.get("nombre", "")
+
+    productos = inventario.buscar_por_nombre(nombre) if nombre else []
+
+    return render_template(
+        "buscar.html",
+        productos=productos
     )
 
-    db.commit()
 
-    return redirect("/productos")
+# =========================
+# LISTAR USUARIOS
+# =========================
+@app.route("/usuarios")
+def usuarios():
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    cursor.execute("SELECT * FROM usuarios")
+    datos = cursor.fetchall()
+
+    usuarios = []
+
+    for fila in datos:
+        usuario = {
+            "id": fila[0],
+            "nombre": fila[1],
+            "mail": fila[2]
+        }
+        usuarios.append(usuario)
+
+    cursor.close()
+    conexion.close()
+
+    return render_template("usuarios.html", usuarios=usuarios)
 
 
-# ==========================
-# MOSTRAR DATOS DE ARCHIVOS
-# ==========================
+# =========================
+# CONTACTO
+# =========================
+@app.route("/contacto", methods=["GET", "POST"])
+def contactos():
 
+    if request.method == "POST":
+
+        nombre = request.form["nombre"]
+        correo = request.form["correo"]
+        mensaje = request.form["mensaje"]
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+
+        sql = """
+        INSERT INTO usuarios (nombre, mail, password)
+        VALUES (%s, %s, %s)
+        """
+
+        cursor.execute(sql, (nombre, correo, mensaje))
+
+        conexion.commit()
+
+        cursor.close()
+        conexion.close()
+
+        return redirect(url_for("inicio"))
+
+    return render_template("contactos.html")
+
+
+# =========================
+# LECTURA DE ARCHIVOS
+# =========================
 @app.route("/datos")
-def ver_datos():
+def datos_archivos():
 
-    txt = leer_txt()
-    json_datos = leer_json()
-    csv_datos = leer_csv()
+    txt = []
+    try:
+        with open("datos.txt", "r", encoding="utf-8") as f:
+            txt = f.readlines()
+    except:
+        txt = ["No hay archivo TXT"]
+
+    json_datos = []
+    try:
+        with open("datos.json", "r", encoding="utf-8") as f:
+            json_datos = json.load(f)
+    except:
+        json_datos = []
+
+    csv_datos = []
+    try:
+        with open("datos.csv", newline="", encoding="utf-8") as f:
+            lector = csv.reader(f)
+            for fila in lector:
+                csv_datos.append(fila)
+    except:
+        csv_datos = []
 
     return render_template(
         "datos.html",
@@ -317,7 +258,8 @@ def ver_datos():
     )
 
 
-# ==========================
-
+# =========================
+# EJECUTAR APP
+# =========================
 if __name__ == "__main__":
     app.run(debug=True)

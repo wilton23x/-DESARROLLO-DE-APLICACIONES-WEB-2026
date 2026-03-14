@@ -1,0 +1,22 @@
+<h2>Formulario Usuario</h2>
+
+<form method="POST">
+
+Nombre:
+<input type="text" name="nombre" value="{{usuario[1] if usuario else ''}}">
+
+<br><br>
+
+Email:
+<input type="email" name="mail" value="{{usuario[2] if usuario else ''}}">
+
+<br><br>
+
+Password:
+<input type="password" name="password">
+
+<br><br>
+
+<button type="submit">Guardar</button>
+
+</form>

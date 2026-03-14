@@ -6,95 +6,115 @@
 
 <div class="text-center mb-5">
 
-    <h1 class="display-4 fw-bold">
-        📚 Biblioteca Virtual Express
-    </h1>
+<h1 class="display-4 fw-bold">
+📚 Biblioteca Virtual Express
+</h1>
 
-    <p class="lead text-muted">
-        Sistema de Gestión de Inventario desarrollado con Flask, POO y SQLite.
-    </p>
+<p class="lead text-muted">
+Sistema de gestión de inventario desarrollado con Flask, Programación Orientada a Objetos y SQLite.
+</p>
 
-    <hr class="w-50 mx-auto">
+<hr class="w-50 mx-auto">
+
+<p class="text-muted">
+Administra libros, usuarios y archivos del sistema de forma sencilla.
+</p>
 
 </div>
 
 <div class="row g-4">
 
-    <!-- VER INVENTARIO -->
-    <div class="col-md-3">
-        <div class="card shadow h-100 text-center p-4 border-0">
-            <div class="mb-3">
-                <span style="font-size:40px;">📖</span>
-            </div>
+<!-- INVENTARIO -->
+<div class="col-md-3">
 
-            <h5 class="fw-bold">Ver Inventario</h5>
+<div class="card shadow h-100 text-center p-4 border-0">
 
-            <p class="text-muted">
-                Consulta todos los libros registrados en el sistema.
-            </p>
+<div class="mb-3">
+<span style="font-size:40px;">📖</span>
+</div>
 
-            <a href="{{ url_for('lista_productos') }}" class="btn btn-primary">
-                Ver Inventario
-            </a>
-        </div>
-    </div>
+<h5 class="fw-bold">Inventario</h5>
 
-    <!-- AGREGAR LIBRO -->
-    <div class="col-md-3">
-        <div class="card shadow h-100 text-center p-4 border-0">
-            <div class="mb-3">
-                <span style="font-size:40px;">➕</span>
-            </div>
+<p class="text-muted">
+Consulta todos los libros registrados.
+</p>
 
-            <h5 class="fw-bold">Registrar Libro</h5>
+<a href="{{ url_for('lista_productos') }}" class="btn btn-primary">
+Ver Inventario
+</a>
 
-            <p class="text-muted">
-                Agrega un nuevo libro al inventario.
-            </p>
+</div>
 
-            <a href="{{ url_for('nuevo_producto') }}" class="btn btn-success">
-                Agregar Libro
-            </a>
-        </div>
-    </div>
+</div>
 
-    <!-- BUSCAR -->
-    <div class="col-md-3">
-        <div class="card shadow h-100 text-center p-4 border-0">
-            <div class="mb-3">
-                <span style="font-size:40px;">🔍</span>
-            </div>
+<!-- NUEVO LIBRO -->
+<div class="col-md-3">
 
-            <h5 class="fw-bold">Buscar Libro</h5>
+<div class="card shadow h-100 text-center p-4 border-0">
 
-            <p class="text-muted">
-                Encuentra libros rápidamente por su nombre.
-            </p>
+<div class="mb-3">
+<span style="font-size:40px;">➕</span>
+</div>
 
-            <a href="{{ url_for('buscar_producto') }}" class="btn btn-info">
-                Buscar
-            </a>
-        </div>
-    </div>
+<h5 class="fw-bold">Registrar Libro</h5>
 
-    <!-- CONTACTO -->
-    <div class="col-md-3">
-        <div class="card shadow h-100 text-center p-4 border-0">
-            <div class="mb-3">
-                <span style="font-size:40px;">📩</span>
-            </div>
+<p class="text-muted">
+Agrega nuevos libros al inventario.
+</p>
 
-            <h5 class="fw-bold">Contacto</h5>
+<a href="{{ url_for('nuevo_producto') }}" class="btn btn-success">
+Agregar
+</a>
 
-            <p class="text-muted">
-                Envíanos tus comentarios o sugerencias.
-            </p>
+</div>
 
-            <a href="{{ url_for('contactos') }}" class="btn btn-secondary">
-                Contactar
-            </a>
-        </div>
-    </div>
+</div>
+
+<!-- BUSCAR -->
+<div class="col-md-3">
+
+<div class="card shadow h-100 text-center p-4 border-0">
+
+<div class="mb-3">
+<span style="font-size:40px;">🔍</span>
+</div>
+
+<h5 class="fw-bold">Buscar Libro</h5>
+
+<p class="text-muted">
+Encuentra libros rápidamente por su título.
+</p>
+
+<a href="{{ url_for('buscar_producto') }}" class="btn btn-info">
+Buscar
+</a>
+
+</div>
+
+</div>
+
+<!-- USUARIOS -->
+<div class="col-md-3">
+
+<div class="card shadow h-100 text-center p-4 border-0">
+
+<div class="mb-3">
+<span style="font-size:40px;">👥</span>
+</div>
+
+<h5 class="fw-bold">Usuarios</h5>
+
+<p class="text-muted">
+Administra los usuarios registrados.
+</p>
+
+<a href="{{ url_for('usuarios') }}" class="btn btn-warning">
+Ver Usuarios
+</a>
+
+</div>
+
+</div>
 
 </div>
 

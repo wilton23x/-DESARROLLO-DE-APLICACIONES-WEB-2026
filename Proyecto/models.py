@@ -14,18 +14,24 @@ class Producto:
 class Inventario:
 
     def __init__(self):
-        # Diccionario {id: Producto}
+        # Diccionario donde la clave es el id
         self.productos = {}
 
-    # Agregar producto al inventario
+    # ======================
+    # AGREGAR PRODUCTO
+    # ======================
     def agregar_producto(self, producto):
         self.productos[producto.id] = producto
 
-    # Mostrar todos los productos
+    # ======================
+    # MOSTRAR TODOS
+    # ======================
     def mostrar_todos(self):
         return list(self.productos.values())
 
-    # Buscar producto por nombre
+    # ======================
+    # BUSCAR POR NOMBRE
+    # ======================
     def buscar_por_nombre(self, nombre):
 
         resultados = []
@@ -35,3 +41,11 @@ class Inventario:
                 resultados.append(producto)
 
         return resultados
+
+    # ======================
+    # ELIMINAR PRODUCTO
+    # ======================
+    def eliminar_producto(self, id):
+
+        if id in self.productos:
+            del self.productos[id]
