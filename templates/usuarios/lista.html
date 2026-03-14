@@ -1,0 +1,27 @@
+<h2>Lista de Usuarios</h2>
+
+<a href="/usuarios/nuevo">Nuevo usuario</a>
+
+<table border="1">
+<tr>
+<th>ID</th>
+<th>Nombre</th>
+<th>Email</th>
+<th>Acciones</th>
+</tr>
+
+{% for u in usuarios %}
+<tr>
+<td>{{u[0]}}</td>
+<td>{{u[1]}}</td>
+<td>{{u[2]}}</td>
+
+<td>
+<a href="/usuarios/editar/{{u[0]}}">Editar</a>
+<a href="/usuarios/eliminar/{{u[0]}}">Eliminar</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
