@@ -1,265 +1,298 @@
-from flask import Flask, render_template, request, redirect, url_for
-from Proyecto.models import Producto, Inventario
-from Proyecto.conexion.conexion import obtener_conexion
-
-import json
-import csv
+from flask import Flask, render_template, request, redirect, url_for, flash
+from conexion.conexion import obtener_conexion
+from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = "secreto123"
 
 # =========================
-# INVENTARIO EN MEMORIA
+# MODELO USUARIO
 # =========================
-inventario = Inventario()
-
+class Usuario(UserMixin):
+    def __init__(self, id_usuario, nombre, email, password):
+        self.id = id_usuario
+        self.nombre = nombre
+        self.email = email
+        self.password = password
 
 # =========================
-# CARGAR CSV Y GUARDAR EN BD
+# LOGIN MANAGER
 # =========================
-def cargar_csv():
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
-    try:
+# =========================
+# CARGAR USUARIO
+# =========================
+@login_manager.user_loader
+def load_user(user_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM usuarios WHERE id_usuario = %s", (user_id,))
+    user = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
+    if user:
+        return Usuario(
+            user["id_usuario"],
+            user["nombre"],
+            user["email"],
+            user["password"]
+        )
+    return None
+
+# =========================
+# REGISTRO
+# =========================
+@app.route("/registro", methods=["GET", "POST"])
+def registro():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        email = request.form["email"]
+        password = generate_password_hash(request.form["password"])
 
         conexion = obtener_conexion()
-        cursor = conexion.cursor()
+        cursor = conexion.cursor(dictionary=True)
 
-        with open("datos.csv", newline="", encoding="utf-8") as archivo:
+        # VALIDAR EMAIL
+        cursor.execute("SELECT * FROM usuarios WHERE email=%s", (email,))
+        existe = cursor.fetchone()
 
-            lector = csv.DictReader(archivo)
+        if existe:
+            flash("El correo ya está registrado")
+            return redirect(url_for("registro"))
 
-            for fila in lector:
-
-                id = int(fila["id"])
-                nombre = fila["nombre"]
-                autor = fila["autor"]
-                categoria = fila["categoria"]
-                precio = float(fila["precio"])
-
-                # Guardar en inventario
-                producto = Producto(id, nombre, autor, 1, precio)
-                inventario.agregar_producto(producto)
-
-                # Guardar en base de datos
-                sql = """
-                INSERT INTO libros (id, nombre, autor, categoria, precio)
-                VALUES (%s,%s,%s,%s,%s)
-                """
-
-                valores = (id, nombre, autor, categoria, precio)
-
-                try:
-                    cursor.execute(sql, valores)
-                except:
-                    pass
+        cursor.execute(
+            "INSERT INTO usuarios (nombre, email, password) VALUES (%s,%s,%s)",
+            (nombre, email, password)
+        )
 
         conexion.commit()
         cursor.close()
         conexion.close()
 
-        print("CSV cargado correctamente")
+        flash("Usuario registrado correctamente")
+        return redirect(url_for("login"))
 
-    except Exception as e:
-        print("Error cargando CSV:", e)
-
-
-# Ejecutar al iniciar
-cargar_csv()
-
+    return render_template("usuarios/form.html")
 
 # =========================
-# PAGINA INICIO
+# LOGIN
+# =========================
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM usuarios WHERE email=%s", (email,))
+        user = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        if user and check_password_hash(user["password"], password):
+            usuario = Usuario(
+                user["id_usuario"],
+                user["nombre"],
+                user["email"],
+                user["password"]
+            )
+            login_user(usuario)
+            return redirect(url_for("lista_productos"))
+        else:
+            flash("Correo o contraseña incorrectos")
+
+    return render_template("usuarios/login.html")
+
+# =========================
+# LOGOUT
+# =========================
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Sesión cerrada")
+    return redirect(url_for("login"))
+
+# =========================
+# INICIO
 # =========================
 @app.route("/")
 def inicio():
     return render_template("index.html")
 
+# =========================
+# CONTACTOS
+# =========================
+@app.route("/contactos", methods=["GET", "POST"])
+def contactos():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        correo = request.form["correo"]
+        mensaje = request.form["mensaje"]
+
+        print("Nuevo mensaje:")
+        print(nombre, correo, mensaje)
+
+        flash("Mensaje enviado correctamente ✅")
+        return redirect(url_for("contactos"))
+
+    return render_template("contactos.html")
 
 # =========================
-# LISTAR PRODUCTOS
+# DATOS
+# =========================
+@app.route("/datos")
+def datos_archivos():
+    return render_template("datos.html")
+
+# =========================
+# PRODUCTOS
 # =========================
 @app.route("/productos")
+@login_required
 def lista_productos():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
 
-    productos = inventario.mostrar_todos()
+    cursor.execute("SELECT * FROM productos")
+    productos = cursor.fetchall()
 
-    return render_template(
-        "productos/listproducts.html",
-        productos=productos
-    )
+    cursor.close()
+    conexion.close()
 
+    return render_template("productos/lista.html", productos=productos)
 
 # =========================
 # NUEVO PRODUCTO
 # =========================
 @app.route("/nuevo", methods=["GET", "POST"])
+@login_required
 def nuevo_producto():
-
     if request.method == "POST":
-
-        id = len(inventario.productos) + 1
         nombre = request.form["nombre"]
         autor = request.form["autor"]
         cantidad = int(request.form["cantidad"])
         precio = float(request.form["precio"])
 
-        producto = Producto(id, nombre, autor, cantidad, precio)
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
 
-        inventario.agregar_producto(producto)
+        cursor.execute("""
+            INSERT INTO productos (nombre, autor, cantidad, precio)
+            VALUES (%s, %s, %s, %s)
+        """, (nombre, autor, cantidad, precio))
 
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+        flash("Producto agregado correctamente")
         return redirect(url_for("lista_productos"))
 
     return render_template("productos/form.html", producto=None)
 
-
 # =========================
-# EDITAR PRODUCTO
+# EDITAR
 # =========================
 @app.route("/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editar_producto(id):
-
-    producto = inventario.productos.get(id)
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
 
     if request.method == "POST":
+        nombre = request.form["nombre"]
+        autor = request.form["autor"]
+        cantidad = int(request.form["cantidad"])
+        precio = float(request.form["precio"])
 
-        producto.nombre = request.form["nombre"]
-        producto.autor = request.form["autor"]
-        producto.cantidad = int(request.form["cantidad"])
-        producto.precio = float(request.form["precio"])
+        cursor.execute("""
+            UPDATE productos
+            SET nombre=%s, autor=%s, cantidad=%s, precio=%s
+            WHERE id=%s
+        """, (nombre, autor, cantidad, precio, id))
 
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+        flash("Producto actualizado")
         return redirect(url_for("lista_productos"))
 
-    return render_template(
-        "productos/form.html",
-        producto=producto
-    )
-
-
-# =========================
-# ELIMINAR PRODUCTO
-# =========================
-@app.route("/eliminar/<int:id>")
-def eliminar_producto(id):
-
-    inventario.productos.pop(id, None)
-
-    return redirect(url_for("lista_productos"))
-
-
-# =========================
-# BUSCAR PRODUCTO
-# =========================
-@app.route("/buscar", methods=["GET"])
-def buscar_producto():
-
-    nombre = request.args.get("nombre", "")
-
-    productos = inventario.buscar_por_nombre(nombre) if nombre else []
-
-    return render_template(
-        "buscar.html",
-        productos=productos
-    )
-
-
-# =========================
-# LISTAR USUARIOS
-# =========================
-@app.route("/usuarios")
-def usuarios():
-
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-
-    cursor.execute("SELECT * FROM usuarios")
-    datos = cursor.fetchall()
-
-    usuarios = []
-
-    for fila in datos:
-        usuario = {
-            "id": fila[0],
-            "nombre": fila[1],
-            "mail": fila[2]
-        }
-        usuarios.append(usuario)
+    cursor.execute("SELECT * FROM productos WHERE id=%s", (id,))
+    producto = cursor.fetchone()
 
     cursor.close()
     conexion.close()
 
-    return render_template("usuarios.html", usuarios=usuarios)
-
-
-# =========================
-# CONTACTO
-# =========================
-@app.route("/contacto", methods=["GET", "POST"])
-def contactos():
-
-    if request.method == "POST":
-
-        nombre = request.form["nombre"]
-        correo = request.form["correo"]
-        mensaje = request.form["mensaje"]
-
-        conexion = obtener_conexion()
-        cursor = conexion.cursor()
-
-        sql = """
-        INSERT INTO usuarios (nombre, mail, password)
-        VALUES (%s, %s, %s)
-        """
-
-        cursor.execute(sql, (nombre, correo, mensaje))
-
-        conexion.commit()
-
-        cursor.close()
-        conexion.close()
-
-        return redirect(url_for("inicio"))
-
-    return render_template("contactos.html")
-
+    return render_template("productos/form.html", producto=producto)
 
 # =========================
-# LECTURA DE ARCHIVOS
+# ELIMINAR
 # =========================
-@app.route("/datos")
-def datos_archivos():
+@app.route("/eliminar/<int:id>")
+@login_required
+def eliminar_producto(id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
 
-    txt = []
-    try:
-        with open("datos.txt", "r", encoding="utf-8") as f:
-            txt = f.readlines()
-    except:
-        txt = ["No hay archivo TXT"]
+    cursor.execute("DELETE FROM productos WHERE id=%s", (id,))
+    conexion.commit()
 
-    json_datos = []
-    try:
-        with open("datos.json", "r", encoding="utf-8") as f:
-            json_datos = json.load(f)
-    except:
-        json_datos = []
+    cursor.close()
+    conexion.close()
 
-    csv_datos = []
-    try:
-        with open("datos.csv", newline="", encoding="utf-8") as f:
-            lector = csv.reader(f)
-            for fila in lector:
-                csv_datos.append(fila)
-    except:
-        csv_datos = []
-
-    return render_template(
-        "datos.html",
-        txt=txt,
-        json_datos=json_datos,
-        csv_datos=csv_datos
-    )
-
+    flash("Producto eliminado")
+    return redirect(url_for("lista_productos"))
 
 # =========================
-# EJECUTAR APP
+# BUSCAR
+# =========================
+@app.route("/buscar")
+@login_required
+def buscar_producto():
+    nombre = request.args.get("nombre", "")
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM productos WHERE nombre LIKE %s", ("%" + nombre + "%",))
+    productos = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return render_template("buscar.html", productos=productos)
+
+# =========================
+# USUARIOS
+# =========================
+@app.route("/usuarios")
+@login_required
+def usuarios():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("SELECT id_usuario, nombre, email FROM usuarios")
+    datos = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return render_template("usuarios/list.html", usuarios=datos)
+
+# =========================
+# EJECUTAR
 # =========================
 if __name__ == "__main__":
     app.run(debug=True)
