@@ -1,0 +1,140 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ESTRUCTURA GENERAL */
+body {
+    background-color: #f4f6f8;
+    color: #1f2933;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 230px;
+    background-color: #1e293b;
+    padding: 25px 20px;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar nav a {
+    display: block;
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.sidebar nav a:hover {
+    background-color: #334155;
+}
+
+.sidebar nav a.activo {
+    background-color: #38bdf8;
+    color: #0f172a;
+    font-weight: bold;
+}
+
+/* CONTENIDO PRINCIPAL */
+.container {
+    flex: 1;
+    padding: 40px;
+    background-color: #ffffff;
+}
+
+/* TÍTULOS */
+.container h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.container p {
+    text-align: justify;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    color: #334155;
+}
+
+/* FORMULARIO */
+form {
+    max-width: 520px;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+}
+
+/* CAMPOS VÁLIDOS / INVÁLIDOS */
+input.valido {
+    border-color: #22c55e;
+}
+
+input.invalido {
+    border-color: #ef4444;
+}
+
+/* MENSAJES DE ERROR */
+small {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+/* BOTONES */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #38bdf8;
+    color: #0f172a;
+}
+
+button[type="submit"]:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+button[type="reset"] {
+    background-color: #e5e7eb;
+    margin-left: 10px;
+}

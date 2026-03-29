@@ -1,0 +1,92 @@
+/* ===== ESTILO GENERAL ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+<<<<<<< HEAD
+    background-color: #f8f9fa;
+}
+
+/* ===== HEADER ===== */
+header {
+    background: linear-gradient(180deg, #e0f2f1, #ffffff);
+}
+
+/* ===== NAVBAR ===== */
+.navbar-brand {
+    font-weight: 600;
+}
+
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #2a9d8f !important;
+=======
+>>>>>>> 373f61974a6cc317036ff321956ecf92e0fd8d58
+}
+
+/* ===== BOTÓN PERSONALIZADO ===== */
+.btn-primary {
+    background-color: #2a9d8f; /* Azul verdoso (teal) */
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #21867a;
+    transform: scale(1.05);
+}
+
+/* ===== CARDS ===== */
+.card {
+    border-radius: 14px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+}
+
+<<<<<<< HEAD
+/* ===== IMÁGENES ===== */
+.card-img-top {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+=======
+/* ===== HEADER ===== */
+header {
+    background: linear-gradient(180deg, #e0f2f1, #ffffff);
+>>>>>>> 373f61974a6cc317036ff321956ecf92e0fd8d58
+}
+
+/* ===== FOOTER ===== */
+footer {
+    font-size: 0.9rem;
+}
+
+<<<<<<< HEAD
+footer a {
+    text-decoration: none;
+    color: #2a9d8f;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+=======
+>>>>>>> 373f61974a6cc317036ff321956ecf92e0fd8d58
+/* ===== MEDIA QUERY PERSONALIZADA ===== */
+@media (max-width: 576px) {
+    header {
+        background: #e0f2f1;
+    }
+<<<<<<< HEAD
+
+    h1 {
+        font-size: 1.8rem;
+    }
+=======
+>>>>>>> 373f61974a6cc317036ff321956ecf92e0fd8d58
+}
