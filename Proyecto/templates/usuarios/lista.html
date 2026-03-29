@@ -1,27 +1,46 @@
-<h2>Lista de Usuarios</h2>
+{% extends "base.html" %}
 
-<a href="/usuarios/nuevo">Nuevo usuario</a>
+{% block title %}Usuarios{% endblock %}
 
-<table border="1">
-<tr>
-<th>ID</th>
-<th>Nombre</th>
-<th>Email</th>
-<th>Acciones</th>
-</tr>
+{% block content %}
 
-{% for u in usuarios %}
-<tr>
-<td>{{u[0]}}</td>
-<td>{{u[1]}}</td>
-<td>{{u[2]}}</td>
+<div class="container mt-4">
 
-<td>
-<a href="/usuarios/editar/{{u[0]}}">Editar</a>
-<a href="/usuarios/eliminar/{{u[0]}}">Eliminar</a>
-</td>
+    <h2 class="mb-4">👥 Lista de Usuarios</h2>
 
-</tr>
-{% endfor %}
+    {% if usuarios %}
+    <div class="card shadow p-3">
 
-</table>
+        <table class="table table-bordered table-striped">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for u in usuarios %}
+                <tr>
+                    <td>{{ u.id_usuario }}</td>
+                    <td>{{ u.nombre }}</td>
+                    <td>{{ u.email }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+        <div class="alert alert-info text-center">
+            No hay usuarios registrados
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

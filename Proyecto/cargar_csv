@@ -1,21 +1,18 @@
-def cargar_csv():
+import csv
+from services.producto_service import insertar_producto
 
+def cargar_csv():
     try:
         with open("datos.csv", newline="", encoding="utf-8") as archivo:
-
             lector = csv.DictReader(archivo)
 
             for fila in lector:
+                nombre = fila["nombre"]
+                autor = fila.get("autor", "")
+                cantidad = int(fila.get("cantidad", 1))
+                precio = float(fila["precio"])
 
-                producto = Producto(
-                    int(fila["id"]),
-                    fila["nombre"],
-                    fila["autor"],
-                    1,
-                    float(fila["precio"])
-                )
-
-                inventario.agregar_producto(producto)
+                insertar_producto(nombre, autor, cantidad, precio)
 
         print("CSV cargado correctamente")
 

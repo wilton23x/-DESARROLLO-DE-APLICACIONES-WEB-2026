@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Interactiva</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+    <h2>Galería JS</h2>
+    <nav>
+        <a href="../index.html">Inicio</a>
+        <a href="../Semana 3/index.html">Semana 3</a>
+        <a href="../Semana 4/index.html">Semana 4</a>
+        <a href="./index.html" class="activo">Semana 5</a>
+        <a href="../Semana 6/index.html">Semana 6</a>
+        <a href="../Semana 7/index.html">Semana 7</a>
+        <a href="../Semana 8/index.html">Semana 8</a>
+    </nav>
+</aside>
+
+    <!-- Main -->
+    <main class="content">
+
+        <header class="topbar">
+            <h1>Galería Interactiva</h1>
+            <span class="badge">JavaScript</span>
+        </header>
+
+        <section class="controls">
+            <input type="url" id="imageUrl" placeholder="URL directa de imagen">
+            <button id="addImage">Agregar</button>
+            <button id="deleteImage" class="danger">Eliminar</button>
+        </section>
+
+        <section id="gallery" class="gallery"></section>
+
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

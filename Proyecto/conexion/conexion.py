@@ -1,10 +1,15 @@
 import mysql.connector
 
 def obtener_conexion():
-    conexion = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="biblioteca"
-    )
-    return conexion
+    try:
+        conexion = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="desarrollo_web"
+        )
+        return conexion
+
+    except mysql.connector.Error as err:
+        print(f" Error de conexión a MySQL: {err}")
+        return None

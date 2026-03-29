@@ -1,0 +1,87 @@
+/* ===== RESET BÁSICO ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+}
+
+/* ===== NAVEGACIÓN ===== */
+nav {
+    padding: 15px 30px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+nav a {
+    text-decoration: none;
+    color: #0077cc;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.contenedor {
+    min-height: 100vh;      /* ocupa toda la pantalla */
+    width: 100%;            /* ocupa todo el ancho */
+    background: #ffffff;
+    padding: 40px;
+    text-align: justify;
+    box-sizing: border-box;
+}
+
+/* ===== TÍTULOS ===== */
+h1, h2, h3 {
+    color: #333;
+    text-align: left;
+}
+
+/* ===== LISTA DE PRODUCTOS ===== */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+/* ===== PRECIO ===== */
+.precio {
+    color: green;
+    font-weight: bold;
+}
+
+/* ===== FORMULARIO ===== */
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+/* ===== BOTONES ===== */
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005fa3;
+}

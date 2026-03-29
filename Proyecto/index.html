@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desarrollo de Aplicaciones Web</title>
+
+    <!-- Fuente -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2a9d8f;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --bg: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 20px 40px;
+        }
+
+        header h1 {
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 650px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 18px;
+            padding: 32px;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+
+        .card a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 24px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Desarrollo de Aplicaciones Web</h1>
+    <p>
+        Proyecto académico desarrollado de forma progresiva por semanas,
+        aplicando HTML5, CSS3, Bootstrap y JavaScript hasta la implementación
+        de una aplicación web interactiva.
+    </p>
+</header>
+
+<main>
+    <section class="grid">
+
+        <!-- SEMANA 3 -->
+        <article class="card">
+            <h2>Semana 3</h2>
+            <p>
+                Fundamentos de HTML5 y CSS3. Uso de estructura semántica,
+                formularios, tablas y estilos básicos.
+            </p>
+            <a href="Semana 3/">Acceder al proyecto →</a>
+        </article>
+
+        <!-- SEMANA 4 -->
+        <article class="card">
+            <h2>Semana 4</h2>
+            <p>
+                Diseño web responsivo con Bootstrap 5. Uso del sistema Grid,
+                Flexbox, componentes y estilos avanzados.
+            </p>
+            <a href="Semana 4/">Acceder al proyecto →</a>
+        </article>
+
+        <!-- SEMANA 5 -->
+        <article class="card">
+            <h2>Semana 5</h2>
+            <p>
+                Desarrollo de una galería interactiva utilizando JavaScript.
+                Manipulación del DOM y eventos.
+            </p>
+            <a href="Semana 5/">Acceder al proyecto →</a>
+        </article>
+
+        <!-- SEMANA 6 -->
+        <article class="card">
+            <h2>Semana 6</h2>
+            <p>
+                Formulario interactivo con validaciones dinámicas en tiempo real
+                utilizando JavaScript.
+            </p>
+            <a href="Semana 6/">Acceder al proyecto →</a>
+        </article>
+
+        <!-- SEMANA 7 -->
+        <article class="card">
+            <h2>Semana 7</h2>
+            <p>
+                Lista dinámica de productos usando JavaScript y manipulación
+                del DOM con botón para agregar nuevos elementos.
+            </p>
+            <a href="Semana 7/">Acceder al proyecto →</a>
+        </article>
+
+        <!-- SEMANA 8 -->
+        <article class="card">
+            <h2>Semana 8</h2>
+            <p>
+                Continuación del proyecto con almacenamiento local, edición
+                y mejora de la experiencia del usuario.
+            </p>
+            <a href="Semana8/">Acceder al proyecto →</a>
+        </article>
+
+    </section>
+</main>
+
+<footer>
+    © 2025 · Desarrollo de Aplicaciones Web · Proyecto Académico
+</footer>
+
+</body>
+</html>

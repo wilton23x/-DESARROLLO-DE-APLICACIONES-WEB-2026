@@ -4,117 +4,107 @@
 
 {% block content %}
 
-<!-- HERO -->
+<!-- BIENVENIDA -->
 <div class="text-center mb-5">
 
-<h1 class="display-4 fw-bold text-primary">
-<i class="bi bi-book-half"></i> Biblioteca Virtual Express
-</h1>
+    <h1 class="fw-bold text-primary display-5">
+        📚 Biblioteca Virtual Express
+    </h1>
 
-<p class="lead text-muted">
-Sistema de gestión de inventario con Flask, MySQL y autenticación de usuarios.
-</p>
+    <p class="text-muted">
+        Sistema de gestión de libros con Flask + MySQL
+    </p>
 
-<hr class="w-50 mx-auto">
-
-{% if current_user.is_authenticated %}
-<p class="text-success fw-bold">
-👋 Bienvenido, {{ current_user.nombre }}
-</p>
-{% else %}
-<p class="text-muted">
-🔐 Inicia sesión para acceder a todas las funcionalidades
-</p>
-{% endif %}
+    {% if current_user.is_authenticated %}
+        <p class="text-success fw-bold">
+            👋 Bienvenido, {{ current_user.nombre }}
+        </p>
+    {% else %}
+        <p class="text-danger">
+            🔐 Inicia sesión para acceder a todas las funciones
+        </p>
+    {% endif %}
 
 </div>
 
 <!-- DASHBOARD -->
 <div class="row g-4">
 
-<!-- INVENTARIO -->
-<div class="col-md-3">
-<div class="card shadow-sm h-100 text-center border-0">
+    <!-- INVENTARIO -->
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 h-100 text-center p-3">
 
-<div class="card-body">
-<i class="bi bi-box-seam text-primary" style="font-size:40px;"></i>
+            <i class="bi bi-journal-bookmark text-primary" style="font-size: 45px;"></i>
 
-<h5 class="fw-bold mt-3">Inventario</h5>
+            <h5 class="mt-3 fw-bold">Inventario</h5>
+            <p class="text-muted">Ver todos los libros registrados</p>
 
-<p class="text-muted">
-Consulta todos los libros registrados.
-</p>
+            <a href="{{ url_for('ver_productos') }}" class="btn btn-primary w-100">
+                📚 Ver libros
+            </a>
 
-<a href="{{ url_for('lista_productos') }}" class="btn btn-primary w-100">
-Ver Inventario
-</a>
-</div>
+        </div>
+    </div>
 
-</div>
-</div>
+    <!-- AGREGAR LIBRO -->
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 h-100 text-center p-3">
 
-<!-- NUEVO -->
-<div class="col-md-3">
-<div class="card shadow-sm h-100 text-center border-0">
+            <i class="bi bi-plus-circle text-success" style="font-size: 45px;"></i>
 
-<div class="card-body">
-<i class="bi bi-plus-circle text-success" style="font-size:40px;"></i>
+            <h5 class="mt-3 fw-bold">Agregar</h5>
+            <p class="text-muted">Registrar nuevos libros</p>
 
-<h5 class="fw-bold mt-3">Registrar Libro</h5>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('nuevo_producto') }}" class="btn btn-success w-100">
+                    ➕ Agregar libro
+                </a>
+            {% else %}
+                <button class="btn btn-secondary w-100" disabled>
+                    🔒 Inicia sesión
+                </button>
+            {% endif %}
 
-<p class="text-muted">
-Agrega nuevos libros al sistema.
-</p>
+        </div>
+    </div>
 
-<a href="{{ url_for('nuevo_producto') }}" class="btn btn-success w-100">
-Agregar Libro
-</a>
-</div>
+    <!-- BUSCAR -->
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 h-100 text-center p-3">
 
-</div>
-</div>
+            <i class="bi bi-search text-info" style="font-size: 45px;"></i>
 
-<!-- BUSCAR -->
-<div class="col-md-3">
-<div class="card shadow-sm h-100 text-center border-0">
+            <h5 class="mt-3 fw-bold">Buscar</h5>
+            <p class="text-muted">Encuentra libros rápido</p>
 
-<div class="card-body">
-<i class="bi bi-search text-info" style="font-size:40px;"></i>
+            <a href="{{ url_for('buscar_producto') }}" class="btn btn-info text-white w-100">
+                🔍 Buscar
+            </a>
 
-<h5 class="fw-bold mt-3">Buscar</h5>
+        </div>
+    </div>
 
-<p class="text-muted">
-Encuentra libros rápidamente.
-</p>
+    <!-- USUARIOS -->
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 h-100 text-center p-3">
 
-<a href="{{ url_for('buscar_producto') }}" class="btn btn-info w-100">
-Buscar
-</a>
-</div>
+            <i class="bi bi-people text-warning" style="font-size: 45px;"></i>
 
-</div>
-</div>
+            <h5 class="mt-3 fw-bold">Usuarios</h5>
+            <p class="text-muted">Gestión de usuarios</p>
 
-<!-- USUARIOS -->
-<div class="col-md-3">
-<div class="card shadow-sm h-100 text-center border-0">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('usuarios') }}" class="btn btn-warning w-100">
+                    👥 Ver usuarios
+                </a>
+            {% else %}
+                <button class="btn btn-secondary w-100" disabled>
+                    🔒 Solo admin
+                </button>
+            {% endif %}
 
-<div class="card-body">
-<i class="bi bi-people text-warning" style="font-size:40px;"></i>
-
-<h5 class="fw-bold mt-3">Usuarios</h5>
-
-<p class="text-muted">
-Administra usuarios registrados.
-</p>
-
-<a href="{{ url_for('usuarios') }}" class="btn btn-warning w-100">
-Ver Usuarios
-</a>
-</div>
-
-</div>
-</div>
+        </div>
+    </div>
 
 </div>
 

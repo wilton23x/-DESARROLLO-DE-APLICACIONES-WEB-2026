@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5" style="max-width: 420px;">
+
+    <div class="card shadow p-4">
+
+        <h3 class="text-center mb-4">🔐 Iniciar Sesión</h3>
+
+        <form method="POST">
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="mb-3">
+
+                <label class="form-label">Contraseña</label>
+
+                <div class="input-group">
+
+                    <input type="password" name="password" id="password" class="form-control" required>
+
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- BOTÓN -->
+            <button type="submit" class="btn btn-primary w-100">
+                Ingresar
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT PARA MOSTRAR/OCULTAR CONTRASEÑA -->
+<script>
+function togglePassword() {
+    const pass = document.getElementById("password");
+
+    if (pass.type === "password") {
+        pass.type = "text";
+    } else {
+        pass.type = "password";
+    }
+}
+</script>
+
+{% endblock %}
