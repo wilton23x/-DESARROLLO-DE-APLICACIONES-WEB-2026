@@ -1,20 +1,35 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from conexion.conexion import obtener_conexion
-from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask_login import LoginManager, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from reportlab.pdfgen import canvas
+import io
+import os
 
-app = Flask(__name__)
-app.secret_key = "secreto123"
+from models.usuario import Usuario
 
-# =========================
-# MODELO USUARIO
-# =========================
-class Usuario(UserMixin):
-    def __init__(self, id_usuario, nombre, email, password):
-        self.id = id_usuario
-        self.nombre = nombre
-        self.email = email
-        self.password = password
+from services.usuario_service import (
+    obtener_usuario_por_id,
+    obtener_usuario_por_email,
+    insertar_usuario,
+    obtener_usuarios
+)
+
+from services.producto_service import (
+    listar_productos,
+    insertar_producto,
+    actualizar_producto,
+    eliminar_producto,
+    obtener_producto,
+    buscar_productos
+)
+
+from forms.producto_form import ProductoForm
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(os.path.dirname(__file__), "templates")
+)
+app.secret_key = "clave_super_segura_2026"
 
 # =========================
 # LOGIN MANAGER
@@ -24,19 +39,11 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 # =========================
-# CARGAR USUARIO
+# USER LOADER
 # =========================
 @login_manager.user_loader
 def load_user(user_id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
-
-    cursor.execute("SELECT * FROM usuarios WHERE id_usuario = %s", (user_id,))
-    user = cursor.fetchone()
-
-    cursor.close()
-    conexion.close()
-
+    user = obtener_usuario_por_id(user_id)
     if user:
         return Usuario(
             user["id_usuario"],
@@ -46,233 +53,203 @@ def load_user(user_id):
         )
     return None
 
+
+# =========================
+# HOME
+# =========================
+@app.route('/')
+def inicio():
+    return render_template('index.html')
 # =========================
 # REGISTRO
 # =========================
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if request.method == "POST":
+
         nombre = request.form["nombre"]
         email = request.form["email"]
         password = generate_password_hash(request.form["password"])
 
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
-
-        # VALIDAR EMAIL
-        cursor.execute("SELECT * FROM usuarios WHERE email=%s", (email,))
-        existe = cursor.fetchone()
-
-        if existe:
+        if obtener_usuario_por_email(email):
             flash("El correo ya está registrado")
             return redirect(url_for("registro"))
 
-        cursor.execute(
-            "INSERT INTO usuarios (nombre, email, password) VALUES (%s,%s,%s)",
-            (nombre, email, password)
-        )
-
-        conexion.commit()
-        cursor.close()
-        conexion.close()
-
+        insertar_usuario(nombre, email, password)
         flash("Usuario registrado correctamente")
         return redirect(url_for("login"))
 
     return render_template("usuarios/form.html")
 
+
 # =========================
 # LOGIN
 # =========================
-@app.route("/login", methods=["GET", "POST"])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
 
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
 
-        cursor.execute("SELECT * FROM usuarios WHERE email=%s", (email,))
-        user = cursor.fetchone()
+        user = obtener_usuario_por_email(email)
 
-        cursor.close()
-        conexion.close()
+        if user and check_password_hash(user['password'], password):
 
-        if user and check_password_hash(user["password"], password):
             usuario = Usuario(
-                user["id_usuario"],
-                user["nombre"],
-                user["email"],
-                user["password"]
+                user['id_usuario'],
+                user['nombre'],
+                user['email'],
+                user['password']
             )
+
             login_user(usuario)
-            return redirect(url_for("lista_productos"))
-        else:
-            flash("Correo o contraseña incorrectos")
 
-    return render_template("usuarios/login.html")
+            return redirect(url_for('inicio'))
 
+        flash("Usuario o contraseña incorrectos")
+
+    return render_template('usuarios/login.html')
 # =========================
 # LOGOUT
 # =========================
-@app.route("/logout")
+@app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash("Sesión cerrada")
-    return redirect(url_for("login"))
-
-# =========================
-# INICIO
-# =========================
-@app.route("/")
-def inicio():
-    return render_template("index.html")
-
-# =========================
-# CONTACTOS
-# =========================
-@app.route("/contactos", methods=["GET", "POST"])
-def contactos():
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        correo = request.form["correo"]
-        mensaje = request.form["mensaje"]
-
-        print("Nuevo mensaje:")
-        print(nombre, correo, mensaje)
-
-        flash("Mensaje enviado correctamente ✅")
-        return redirect(url_for("contactos"))
-
-    return render_template("contactos.html")
-
-# =========================
-# DATOS
-# =========================
-@app.route("/datos")
-def datos_archivos():
-    return render_template("datos.html")
-
+    return redirect(url_for('login'))
 # =========================
 # PRODUCTOS
 # =========================
 @app.route("/productos")
 @login_required
-def lista_productos():
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
-
-    cursor.execute("SELECT * FROM productos")
-    productos = cursor.fetchall()
-
-    cursor.close()
-    conexion.close()
-
+def ver_productos():
+    productos = listar_productos()
     return render_template("productos/lista.html", productos=productos)
 
-# =========================
-# NUEVO PRODUCTO
-# =========================
-@app.route("/nuevo", methods=["GET", "POST"])
+
+@app.route("/productos/nuevo", methods=["GET", "POST"])
 @login_required
 def nuevo_producto():
+
     if request.method == "POST":
-        nombre = request.form["nombre"]
-        autor = request.form["autor"]
-        cantidad = int(request.form["cantidad"])
-        precio = float(request.form["precio"])
 
-        conexion = obtener_conexion()
-        cursor = conexion.cursor()
+        try:
+            insertar_producto(
+                request.form["nombre"],
+                request.form["autor"],
+                int(request.form["cantidad"]),
+                float(request.form["precio"])
+            )
 
-        cursor.execute("""
-            INSERT INTO productos (nombre, autor, cantidad, precio)
-            VALUES (%s, %s, %s, %s)
-        """, (nombre, autor, cantidad, precio))
+            flash("Producto agregado correctamente")
+            return redirect(url_for("ver_productos"))
 
-        conexion.commit()
-        cursor.close()
-        conexion.close()
-
-        flash("Producto agregado correctamente")
-        return redirect(url_for("lista_productos"))
+        except Exception as e:
+            print(e)
+            flash("Error al guardar producto")
+            return redirect(url_for("nuevo_producto"))
 
     return render_template("productos/form.html", producto=None)
 
-# =========================
-# EDITAR
-# =========================
-@app.route("/editar/<int:id>", methods=["GET", "POST"])
+
+@app.route("/productos/editar/<int:id>", methods=["GET", "POST"])
 @login_required
 def editar_producto(id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
 
     if request.method == "POST":
-        nombre = request.form["nombre"]
-        autor = request.form["autor"]
-        cantidad = int(request.form["cantidad"])
-        precio = float(request.form["precio"])
 
-        cursor.execute("""
-            UPDATE productos
-            SET nombre=%s, autor=%s, cantidad=%s, precio=%s
-            WHERE id=%s
-        """, (nombre, autor, cantidad, precio, id))
+        form = ProductoForm(request.form)
+        errores = form.validar()
 
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+        if errores:
+            for e in errores:
+                flash(e)
+            return redirect(url_for("editar_producto", id=id))
+
+        actualizar_producto(
+            id,
+            form.nombre,
+            form.autor,
+            int(form.cantidad or 0),
+            float(form.precio)
+        )
 
         flash("Producto actualizado")
-        return redirect(url_for("lista_productos"))
+        return redirect(url_for("ver_productos"))
 
-    cursor.execute("SELECT * FROM productos WHERE id=%s", (id,))
-    producto = cursor.fetchone()
-
-    cursor.close()
-    conexion.close()
-
+    producto = obtener_producto(id)
     return render_template("productos/form.html", producto=producto)
 
-# =========================
-# ELIMINAR
-# =========================
-@app.route("/eliminar/<int:id>")
+
+@app.route("/productos/eliminar/<int:id>")
 @login_required
-def eliminar_producto(id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-
-    cursor.execute("DELETE FROM productos WHERE id=%s", (id,))
-    conexion.commit()
-
-    cursor.close()
-    conexion.close()
-
+def eliminar_producto_route(id):
+    eliminar_producto(id)
     flash("Producto eliminado")
-    return redirect(url_for("lista_productos"))
+    return redirect(url_for("ver_productos"))
 
-# =========================
-# BUSCAR
-# =========================
-@app.route("/buscar")
+
+@app.route("/productos/buscar")
 @login_required
 def buscar_producto():
-    nombre = request.args.get("nombre", "")
 
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
+    nombre = request.args.get("nombre")
 
-    cursor.execute("SELECT * FROM productos WHERE nombre LIKE %s", ("%" + nombre + "%",))
-    productos = cursor.fetchall()
+    if nombre:
+        productos = buscar_productos(nombre)
+    else:
+        productos = None
 
-    cursor.close()
-    conexion.close()
+    return render_template("productos/buscar.html", productos=productos)
 
-    return render_template("buscar.html", productos=productos)
+
+# =========================
+# PDF
+# =========================
+@app.route("/productos/pdf")
+@login_required
+def exportar_pdf():
+
+    buffer = io.BytesIO()
+    pdf = canvas.Canvas(buffer)
+
+    productos = listar_productos()
+
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(180, 800, "REPORTE DE PRODUCTOS")
+
+    pdf.setFont("Helvetica-Bold", 12)
+    y = 760
+
+    pdf.drawString(50, y, "ID")
+    pdf.drawString(80, y, "Nombre")
+    pdf.drawString(200, y, "Autor")
+    pdf.drawString(320, y, "Cantidad")
+    pdf.drawString(400, y, "Precio")
+
+    pdf.setFont("Helvetica", 10)
+    y -= 20
+
+    for p in productos:
+
+        pdf.drawString(50, y, str(p.get("id_producto", p.get("id"))))
+        pdf.drawString(80, y, p["nombre"])
+        pdf.drawString(200, y, p["autor"])
+        pdf.drawString(320, y, str(p["cantidad"]))
+        pdf.drawString(400, y, "$" + str(p["precio"]))
+
+        y -= 20
+
+        if y < 50:
+            pdf.showPage()
+            y = 800
+
+    pdf.save()
+    buffer.seek(0)
+
+    return send_file(buffer, as_attachment=True, download_name="reporte_productos.pdf")
+
 
 # =========================
 # USUARIOS
@@ -280,19 +257,12 @@ def buscar_producto():
 @app.route("/usuarios")
 @login_required
 def usuarios():
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
+    datos = obtener_usuarios()
+    return render_template("usuarios/lista.html", usuarios=datos)
 
-    cursor.execute("SELECT id_usuario, nombre, email FROM usuarios")
-    datos = cursor.fetchall()
-
-    cursor.close()
-    conexion.close()
-
-    return render_template("usuarios/list.html", usuarios=datos)
 
 # =========================
-# EJECUTAR
+# RUN
 # =========================
 if __name__ == "__main__":
     app.run(debug=True)
