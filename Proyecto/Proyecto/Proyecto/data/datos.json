@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nombre": "El Principito",
+    "autor": "Antoine de Saint-Exupéry",
+    "categoria": "Novela",
+    "precio": 10.50
+  },
+  {
+    "id": 2,
+    "nombre": "Cien Años de Soledad",
+    "autor": "Gabriel García Márquez",
+    "categoria": "Novela",
+    "precio": 15.00
+  },
+  {
+    "id": 3,
+    "nombre": "Don Quijote",
+    "autor": "Miguel de Cervantes",
+    "categoria": "Clásico",
+    "precio": 18.75
+  }
+]

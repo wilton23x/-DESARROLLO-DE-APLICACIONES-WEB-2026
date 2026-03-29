@@ -1,0 +1,3 @@
+1 | El Principito | Antoine de Saint-Exupéry | Novela | 10.50
+2 | Cien Años de Soledad | Gabriel García Márquez | Novela | 15.00
+3 | Don Quijote | Miguel de Cervantes | Clásico | 18.75

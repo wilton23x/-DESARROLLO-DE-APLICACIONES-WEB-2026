@@ -1,0 +1,87 @@
+/* ===== ESTILOS GENERALES ===== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f4f4f4;
+}
+
+/* ===== ENCABEZADO ===== */
+header {
+    background: #0077cc;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* ===== NAVEGACIÓN ===== */
+nav {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Botón especial (ejemplo Semana 4) */
+.semana4-link {
+    margin-left: auto;
+    background-color: #1abc9c;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+.semana4-link:hover {
+    background-color: #16a085;
+}
+
+/* ===== SECCIONES ===== */
+section {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+/* ===== TABLAS ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+/* ===== FORMULARIOS ===== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ===== BOTONES ===== */
+button {
+    background: #0077cc;
+    color: white;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
