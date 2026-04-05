@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Semana 6 - Formulario con Validaciones</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- MENÚ LATERAL -->
+    <aside class="sidebar">
+        <h2>Galería JS</h2>
+          <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../Semana 3/">Semana 3</a>
+            <a href="../Semana 4/">Semana 4</a>
+            <a href="../Semana 5/">Semana 5</a>
+            <a href="./" class="activo">Semana 6</a>
+            <a href="../Semana 7/">Semana 7</a>
+            <a href="../Semana 8/">Semana 8</a>
+        </nav>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="container">
+        <h1>Semana 6 – Formulario con Validaciones Dinámicas</h1>
+
+        <p>
+            En esta actividad se desarrolla un formulario web interactivo utilizando HTML,
+            CSS y JavaScript, incorporando validaciones dinámicas en tiempo real con el fin
+            de mejorar la experiencia del usuario y garantizar el correcto ingreso de datos.
+        </p>
+
+        <form id="registroForm">
+
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="nombre">
+                <small id="errorNombre"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                <input type="email" id="correo">
+                <small id="errorCorreo"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password">
+                <small id="errorPassword"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmar contraseña</label>
+                <input type="password" id="confirmar">
+                <small id="errorConfirmar"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Edad</label>
+                <input type="number" id="edad">
+                <small id="errorEdad"></small>
+            </div>
+
+            <button type="submit" id="btnEnviar" disabled>Enviar</button>
+            <button type="reset">Reiniciar</button>
+
+        </form>
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

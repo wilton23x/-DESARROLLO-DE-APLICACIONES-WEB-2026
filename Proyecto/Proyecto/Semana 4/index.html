@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Bootstrap - Semana 4</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Mi Proyecto Web</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="navbar-nav ms-auto">
+
+    <!-- Navegación entre semanas -->
+    <li class="nav-item">
+        <a class="nav-link" href="../Semana 3/index.html">⬅ Semana 3</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="../index.html">🏠 Inicio</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="../Semana 5/index.html">Semana 5 ➡</a>
+    </li> class="nav-item">
+        <a class="nav-link" href="../Semana 6/index.html">Semana 6 ➡</a>
+    </li>   
+       <a class="nav-link" href="../Semana 7/index.html">Semana 7 ➡</a>
+    </li>   
+       <a class="nav-link" href="../Semana 8/index.html">Semana 8 ➡</a>
+
+    <!-- Separador visual -->
+    <li class="nav-item">
+        <span class="nav-link disabled">|</span>
+    </li>
+
+    <!-- Secciones internas -->
+    <li class="nav-item">
+        <a class="nav-link" href="#inicio">Inicio</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="#contenido">Contenido</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="#contacto">Contacto</a>
+    </li>
+
+</ul>
+
+        </div>
+    </div>
+</nav>
+
+<!-- ===== HEADER ===== -->
+<header id="inicio" class="text-center py-5">
+    <h1>Bienvenido a Mi Página Web</h1>
+    <p class="lead">
+        Proyecto responsivo desarrollado con Bootstrap 5 y CSS3 avanzado
+    </p>
+</header>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<section id="contenido" class="container my-5">
+    <div class="row g-4">
+
+        <!-- CARD 1 -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow">
+                <img src="assets/img/diseno-web.jpg
+                " class="card-img-top img-fluid" alt="Diseño Web">
+                <div class="card-body">
+                    <h3 class="card-title">Diseño Web</h3>
+                    <p class="card-text">
+                        Desarrollo de interfaces web modernas aplicando principios
+                        de usabilidad, accesibilidad y diseño centrado en el usuario.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow">
+                <img src="assets/img/css3.jpg" class="card-img-top img-fluid" alt="CSS3 Avanzado">
+                <div class="card-body">
+                    <h3 class="card-title">CSS3 Avanzado</h3>
+                    <p class="card-text">
+                        Implementación de animaciones, transiciones suaves y media
+                        queries para mejorar la experiencia del usuario.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow">
+                <img src="assets/img/bootstrap.jpg" class="card-img-top img-fluid" alt="Bootstrap 5">
+                <div class="card-body">
+                    <h3 class="card-title">Bootstrap 5</h3>
+                    <p class="card-text">
+                        Uso del sistema Grid y Flexbox de Bootstrap para crear diseños
+                        responsivos y adaptables a cualquier dispositivo.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== SOBRE EL PROYECTO ===== -->
+<section class="container my-5">
+    <h2 class="text-center mb-3">Sobre el Proyecto</h2>
+    <p class="text-center">
+        Este sitio web fue desarrollado como parte de la asignatura
+        <strong>Desarrollo de Aplicaciones Web</strong>, aplicando Bootstrap 5
+        y técnicas avanzadas de CSS3.
+    </p>
+</section>
+
+<!-- ===== COLLAPSE ===== -->
+<div class="container text-center mb-5">
+    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#infoExtra">
+        Mostrar más información
+    </button>
+
+    <div id="infoExtra" class="collapse mt-3">
+        <div class="card card-body">
+            El proyecto utiliza el modelo de cajas, animaciones, transiciones
+            y media queries para lograr un diseño moderno y adaptable.
+        </div>
+    </div>
+</div>
+
+<!-- ===== TECNOLOGÍAS ===== -->
+<section class="container my-5">
+    <h2 class="text-center mb-3">Tecnologías Utilizadas</h2>
+    <ul class="list-group list-group-flush text-center">
+        <li class="list-group-item">HTML5</li>
+        <li class="list-group-item">CSS3</li>
+        <li class="list-group-item">Bootstrap 5</li>
+        <li class="list-group-item">GitHub Pages</li>
+    </ul>
+</section>
+
+<!-- ===== FORMULARIO ===== -->
+<section id="contacto" class="container mb-5">
+    <h2 class="text-center mb-3">Formulario de Contacto</h2>
+
+    <form class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control">
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Comentarios</label>
+            <textarea class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary px-5">
+                Enviar
+            </button>
+        </div>
+    </form>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="text-center bg-light py-4">
+    <p class="mb-1">&copy; 2025 - Desarrollo de Aplicaciones Web</p>
+    <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

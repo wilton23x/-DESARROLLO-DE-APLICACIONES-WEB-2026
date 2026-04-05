@@ -1,0 +1,142 @@
+:root {
+    --bg: #05070f;
+    --panel: #0b1220;
+    --border: #1f2937;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --primary: #2563eb;
+    --danger: #dc2626;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    height: 100vh;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 30px 20px;
+}
+
+.sidebar h2 {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+}
+
+.sidebar p {
+    color: var(--muted);
+    margin-bottom: 30px;
+}
+
+.sidebar nav a {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 12px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar nav a:hover {
+    background-color: rgba(37, 99, 235, 0.15);
+    color: var(--primary);
+}
+
+/* Content */
+.content {
+    padding: 30px;
+    overflow-y: auto;
+}
+
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.topbar h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+.badge {
+    background-color: rgba(37, 99, 235, 0.15);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.controls input {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: #020617;
+    color: var(--text);
+}
+
+.controls button {
+    padding: 14px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--primary);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.controls button:hover {
+    transform: translateY(-2px);
+}
+
+.controls .danger {
+    background-color: var(--danger);
+}
+
+/* Gallery */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gallery img:hover { 
+    transform: scale(1.0)
